@@ -9,7 +9,7 @@ public interface IMatriculaService {
 	
 	Matricula create(MatriculaForm form);
 	Matricula get(Long id);
-	List<Matricula> getAll();
+	List<Matricula> getAll(String bairro);
 	void delet(Long id);
 
 }
