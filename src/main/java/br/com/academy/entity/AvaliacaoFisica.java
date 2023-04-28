@@ -40,5 +40,8 @@ public class AvaliacaoFisica {
 	
 	@Column(name = "imc_atual")
 	private double imc;
-
+	
+	@Column(name = "classificacao")
+	private String classificacao;
+	
 }

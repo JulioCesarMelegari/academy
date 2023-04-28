@@ -49,7 +49,6 @@ public class AlunoController {
 	
 	@PutMapping("/{id}")
 	public Aluno update(@RequestBody Long id, AlunoUpdateForm form) {
-		
 		return service.update(id, form);
 	}
 }

@@ -26,11 +26,16 @@ public class AvaliacaoFisicaServiceImpl implements IAvaliacaoFisicaService{
 	public AvaliacaoFisica create(AvaliacaoFisicaForm form) {
 		AvaliacaoFisica avaliacao = new AvaliacaoFisica();
 		Aluno aluno = alunoRepository.findById(form.getAlunoId()).get();
+		double peso = form.getPeso();
+		double altura = form.getAltura();
+		double imc = calcImc(form.getPeso(), form.getAltura());
+		String classificacao = classificacao(imc);
 		
 		avaliacao.setAluno(aluno);
-		avaliacao.setPeso(form.getPeso());
-		avaliacao.setAltura(form.getAltura());
-		
+		avaliacao.setPeso(peso);
+		avaliacao.setAltura(altura);
+		avaliacao.setImc(imc);
+		avaliacao.setClassificacao(classificacao);
 		return avaliacaoRepository.save(avaliacao);
 	}
 
@@ -41,19 +46,59 @@ public class AvaliacaoFisicaServiceImpl implements IAvaliacaoFisicaService{
 
 	@Override
 	public List<AvaliacaoFisica> getAll() {
-		avaliacaoRepository.findAll();
-		return null;
+		return avaliacaoRepository.findAll();	
 	}
 
 	@Override
 	public AvaliacaoFisica update(Long id, AvaliacaoFisicaUpdateForm formUpdate) {
-		// TODO Auto-generated method stub
-		return null;
+		double peso = formUpdate.getPeso();
+		double altura = formUpdate.getAltura();
+		double imc = calcImc(formUpdate.getPeso(), formUpdate.getAltura());
+		String classificacao = classificacao(imc);
+		
+		AvaliacaoFisica avaliacao = avaliacaoRepository.findById(id).get();
+		
+		avaliacao.setAltura(altura);
+		avaliacao.setPeso(peso);
+		avaliacao.setImc(imc);
+		avaliacao.setClassificacao(classificacao);
+		return avaliacaoRepository.save(avaliacao);
 	}
 
 	@Override
 	public void delete(Long id) {
 		avaliacaoRepository.deleteById(id);	
+	}
+	
+	private double calcImc(double altura, double peso) {
+		double imc = peso/(altura * altura);
+		return imc;
+	}
+	
+	private String classificacao(double imc) {
+		String classificacao = null;
+		
+		if(imc < 18.5){
+			classificacao = "Abaixo do Peso";
+		}else {
+			if(imc > 40) {
+			classificacao = "Obesidade Mórbida";
+		}else {
+			if( imc < 24.9 && 18.5 < imc) {
+			 classificacao = "Peso normal";
+		}else{
+			if(25.0 < imc && imc < 29.9){
+				classificacao = "Sobrepeso";
+		}else {
+			if(30.0 < imc && imc < 34.9) {
+				classificacao = "Obesidade Grau I";
+		}else {
+			if(35.0 < imc && imc < 39.9) {
+				classificacao = "Obesidade Grau II";
+		}
+		}}}}}
+	 
+		return classificacao;
 	}
 
 }
