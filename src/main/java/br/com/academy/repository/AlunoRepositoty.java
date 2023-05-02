@@ -12,6 +12,6 @@ import br.com.academy.entity.Aluno;
 @Repository
 public interface AlunoRepositoty extends JpaRepository<Aluno, Long> {
 	
-	List<Aluno> findByDataDeNascimento(LocalDate dataDeNascimento);
+	List<Aluno> findByDataNascimento(LocalDate dataDeNascimento);
 
 }

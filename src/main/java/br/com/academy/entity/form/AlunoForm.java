@@ -4,6 +4,8 @@ import java.time.LocalDate;
 
 import org.hibernate.validator.constraints.br.CPF;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
@@ -31,8 +33,9 @@ public class AlunoForm {
 	@Size(min= 3, max=50, message = "'${validatedValue}' necessário valores entre {min} e {max} caracteres")
 	private String bairro;
 	
-	@NotNull(message = "Preencha o campo corretamente")
+	@NotNull(message = "Preencha o campo corretamente")	
 	@Past(message = "Data '${validatedValue}' é inválida")
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dataNascimento;
 	
 }
